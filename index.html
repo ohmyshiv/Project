@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Proposal for Akriti</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #f3ebe1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Cormorant Garamond', serif;
+  overflow: hidden;
+}
+
+/* Paper with CSS-only texture */
+.paper {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  padding: 60px 40px 50px;
+  border-radius: 22px;
+  background-color: #fffaf3;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      rgba(240, 230, 220, 0.1),
+      rgba(240, 230, 220, 0.1) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(240, 230, 220, 0.1),
+      rgba(240, 230, 220, 0.1) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Edge decoration with emojis */
+.paper::before {
+  content: "🌸🌿🌷💮🌹🌿🌸🌷";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 2rem;
+  opacity: 0.15;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Letter text */
+p {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #4a3b30;
+  margin-bottom: 30px;
+}
+
+/* Buttons container */
+.buttons {
+  position: relative;
+  height: 140px;
+}
+
+/* Buttons side by side */
+button {
+  position: absolute;
+  padding: 12px 32px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  cursor: pointer;
+  transition:
+    left 0.18s cubic-bezier(.2,1.4,.4,1),
+    top 0.18s cubic-bezier(.2,1.4,.4,1);
+  line-height: 1.2;
+  box-sizing: border-box;
+  width: 90px;
+}
+
+#yes {
+  background: #c76a7a;
+  color: white;
+  left: 35%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+#no {
+  background: #e7d6cc;
+  color: #6b2f3a;
+  left: 65%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+/* Falling flower emojis */
+.flower {
+  position: fixed;
+  top: -40px;
+  font-size: 1.6rem;
+  pointer-events: none;
+  animation: fall linear forwards;
+  opacity: 0.9;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(180deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="paper" id="paper">
+
+  <p>
+    There was no big moment, no sudden spark —<br>
+    just ordinary days that felt lighter with you in them.<br>
+    Some feelings grow quietly.<br>
+    They don’t rush in,<br>
+    they stay.
+  </p>
+
+  <p><strong>Akriti</strong>, you feel like something I want to hold on to.</p>
+
+  <!-- Question after lines -->
+  <p style="font-size:1.3rem; font-family:'Dancing Script', cursive; margin-bottom:25px;">
+    Just one question… will you be mine?
+  </p>
+
+  <div class="buttons">
+    <button id="yes">Yes ❤️</button>
+    <button id="no">No 😭</button>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const container = document.querySelector(".buttons");
+const paper = document.getElementById("paper");
+
+/* FAST LONG-DISTANCE POP MOVEMENT */
+function moveNo() {
+  const maxX = container.clientWidth - noBtn.offsetWidth;
+  const maxY = container.clientHeight - noBtn.offsetHeight;
+
+  let x, y;
+  if (Math.random() > 0.5) {
+    x = Math.random() > 0.5 ? 0 : maxX;
+    y = Math.random() * maxY;
+  } else {
+    x = Math.random() * maxX;
+    y = Math.random() > 0.5 ? 0 : maxY;
+  }
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+// Move before click/touch
+["mouseenter","touchstart","pointerenter"].forEach(evt => {
+  noBtn.addEventListener(evt, e => {
+    e.preventDefault();
+    moveNo();
+  }, { passive:false });
+});
+
+/* Falling flower emojis */
+const flowers = ["🌸","🌷","🌹","💮"];
+
+function flowerRain() {
+  const flower = document.createElement("div");
+  flower.className = "flower";
+  flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+  flower.style.left = Math.random() * 100 + "vw";
+  flower.style.fontSize = (14 + Math.random() * 18) + "px"; // random size
+  flower.style.animationDuration = 3 + Math.random() * 2 + "s";
+  document.body.appendChild(flower);
+
+  setTimeout(() => flower.remove(), 6000);
+}
+
+/* YES button action */
+document.getElementById("yes").addEventListener("click", () => {
+  paper.innerHTML = `
+    <h1>💗</h1>
+    <p>
+      You said 🫵🏻😼yessssss.<br>
+      somehow everything feels a little steadier now.<br><br>
+      This matters to me.<br>
+      <strong>You matter to me.</strong>
+    </p>
+  `;
+  setInterval(flowerRain, 300);
+});
+</script>
+
+</body>
+</html>
